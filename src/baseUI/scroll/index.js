@@ -5,6 +5,7 @@ import PropTypes from 'prop-types'
 import Loading from '../loading/index';
 import LoadingV2 from '../loading-v2/index';
 import { debounce } from "../../api/utils/utils";
+import style from "../../assets/global-style";
 
 const ScrollContainer = styled.div`
   width: 100%;
@@ -33,11 +34,14 @@ const PullDownLoading = styled.div`
   z-index: 100;
 `
 
+
 const Scroll = forwardRef((props, ref) => {
   const [bScroll, setBScroll] = useState()
   const scrollContainerRef = useRef()
-  const { direction, click, refresh, bounceTop, bounceBottom } = props
+  const { direction, click, refresh, bounceTop, bounceBottom, } = props
   const { pullUp, pullDown, onScroll, pullUpLoading, pullDownLoading  } = props
+
+
 
   const pullUpDebounce = useMemo(() => {
     return debounce(pullUp, 500)
