@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import Horizen from '../../baseUI/horizen-item';
 import { categoryTypes, alphaTypes } from '../../api/config';
 import { 
@@ -20,23 +20,25 @@ import {
 } from './store/actionCreators';
 import { connect } from "react-redux";
 import Loading from '../../baseUI/loading';
+import { CHANGE_ALPHA, CHANGE_CATEGORY, CategoryDataContext } from './data'
 
 
 function Singers (props) {
   
   let { singerList, enterLoading, pullUpLoading, pullDownLoading,pageCount, 
     getHotSingerDispatch, updateDispatch, pullUpRefreshDispatch, pullDownRefreshDispatch } = props
-  // console.log(singerList)
-  let [category, setCategory] = useState ('');
-  let [alpha, setAlpha] = useState ('');
+  const { data, dispatch } = useContext(CategoryDataContext)
+  const { category, alpha } = data.toJS()
 
   let handleUpdateAlpha = (val) => {
-    setAlpha (val);
+    // setAlpha (val);
+    dispatch({type: CHANGE_ALPHA, data: val})
     updateDispatch(category, val)
   }
 
   let handleUpdateCatetory = (val) => {
-    setCategory (val);
+    // setCategory (val);
+    dispatch({type: CHANGE_CATEGORY, data: val})
     updateDispatch(val, alpha)
   }
 

@@ -90,7 +90,7 @@ const Scroll = forwardRef((props, ref) => {
     return () => {
       bScroll.off('scrollEnd')
     }
-  }, [pullUp, bScroll])
+  }, [pullUp, pullUpDebounce, bScroll])
 
   // 下拉刷新
   useEffect(() => {
@@ -105,7 +105,7 @@ const Scroll = forwardRef((props, ref) => {
     return () => {
       bScroll.off('touchEnd')
     }
-  }, [pullDown, bScroll])
+  }, [pullDown, pullDownDebounce, bScroll])
 
   // 刷新
   useEffect (() => {
