@@ -22,8 +22,8 @@ function Rank(props){
   let officialList = rankList.slice(0, globalStartIndex)
   let globalList = rankList.slice(globalStartIndex)
 
-  const enterDetail = (name) => {
-    console.log(name)
+  const enterDetail = (detail) => {
+    props.history.push(`/rank/${detail.id}`)
   }
 
   // 这是渲染榜单列表函数，传入 global 变量来区分不同的布局方式
@@ -33,7 +33,7 @@ function Rank(props){
         {
           list.map(item => {
             return (
-              <ListItem key={item.coverImgId}  tracks={item.tracks}  onClick={() => enterDetail(item.name)}>
+              <ListItem key={item.coverImgId}  tracks={item.tracks}  onClick={() => enterDetail(item)}>
               <div className="img_wrapper">
                 <img src={item.coverImgUrl} alt="" />
                 <div className="decorate"></div>
@@ -62,6 +62,7 @@ function Rank(props){
 
   // 榜单数据未加载出来之前都给隐藏
   let dispalyStyle = loading ? {"display": "none"} : {"display": ""}
+
 
   return (
     <Container>

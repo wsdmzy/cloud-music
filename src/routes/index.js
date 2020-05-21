@@ -5,6 +5,7 @@ import Recommend from '../application/Recommend';
 import Singers from '../application/Singers';
 import Rank from '../application/Rank';
 import Album from '../application/Album';
+import Singer from '../application/Singer';
 
 import { Redirect } from 'react-router-dom';
 export default [{
@@ -30,11 +31,25 @@ export default [{
     },
     {
       path: "/singers",
-      component: Singers
+      component: Singers,
+      key: "singer",
+      routes: [
+        {
+          path: "/singers/:id",
+          component: Singer
+        }
+      ]
     },
     {
       path: "/rank",
-      component: Rank
+      component: Rank,
+      key: "rank",
+      routes: [
+        {
+          path: "/rank/:id",
+          component: Album
+        }
+      ]
     },
   ]
 }]

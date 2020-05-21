@@ -31,3 +31,8 @@ redux 和 hooks
 
 useMemo()
 把“创建”函数和依赖项数组作为参数传入 useMemo，它仅会在某个依赖项改变时才重新计算 memoized 值。这种优化有助于避免在每次渲染时都进行高开销的计算。
+
+useCallback
+  将传给子组件的函数用 useCallback 包裹，这也是 useCallback 的常用场景。
+  如果不用 useCallback 包裹，父组件每次执行时会生成不一样的函数引用
+  因此 useCallback 能够帮我们在依赖不变的情况保持一样的函数引用，最大程度地节约浏览器渲染性能。

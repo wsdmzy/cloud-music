@@ -21,6 +21,7 @@ import {
 import { connect } from "react-redux";
 import Loading from '../../baseUI/loading';
 import { CHANGE_ALPHA, CHANGE_CATEGORY, CategoryDataContext } from './data'
+import { renderRoutes } from 'react-router-config';
 
 
 function Singers (props) {
@@ -29,6 +30,11 @@ function Singers (props) {
     getHotSingerDispatch, updateDispatch, pullUpRefreshDispatch, pullDownRefreshDispatch } = props
   const { data, dispatch } = useContext(CategoryDataContext)
   const { category, alpha } = data.toJS()
+  
+  const enterDetail = id => {
+    props.history.push(`/singers/${id}`)
+  }
+
 
   let handleUpdateAlpha = (val) => {
     // setAlpha (val);
@@ -54,7 +60,7 @@ function Singers (props) {
         {
           singerList.map((item, index) => {
             return (
-              <ListItem key={item.img1v1Id + index }>
+              <ListItem key={item.img1v1Id + index } onClick={() => enterDetail(item.id)}>
                 <div className="img_wrapper">
                   <img src={`${item.picUrl}?param=300x300`} width="100%" height="100%" alt="music" />
                 </div>
@@ -76,7 +82,6 @@ function Singers (props) {
     console.log("下拉刷新")
     pullDownRefreshDispatch(category, alpha)
   }
-
 
   return (
     <>
@@ -103,6 +108,7 @@ function Singers (props) {
         </Scroll>
         { enterLoading ? <Loading></Loading> : null }
       </ListContainer>
+      { renderRoutes (props.route.routes) }
     </>
   )
 }

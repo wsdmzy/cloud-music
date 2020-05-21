@@ -7,6 +7,7 @@ import {
   TabItem
 } from './style';
 import { NavLink } from 'react-router-dom';
+import Player from '../Player';
 
 function Home(props){
   // / =>  HOME
@@ -27,6 +28,7 @@ function Home(props){
       </Tab>
     
       { renderRoutes(route.routes) }
+      <Player></Player>
     </div>
   );
 }
