@@ -12,6 +12,7 @@ import { isEmptyObject  } from '../../api/utils/utils'
 import Loading from '../../baseUI/loading/index';
 import { useCallback } from 'react';
 import SongsList from '../SongList'
+import MusicNote from "../../baseUI/music-note/index";
 
 export const HEADER_HEIGHT = 45;
 
@@ -24,6 +25,12 @@ function Album(props) {
 
   const id = props.match.params.id
   const { currentAlbum: currentAlbumImmutable, enterLoading, getAlbumDataDispatch  } = props
+
+  // 音符动画
+  const musicNoteRef = useRef()
+  const musicAnimation = (x, y) => {
+    musicNoteRef.current.startAnimation({x, y})
+  }
 
   useEffect(() => {
     getAlbumDataDispatch(id)
@@ -129,7 +136,9 @@ function Album(props) {
                 songs={currentAlbum.tracks} 
                 collectCount={currentAlbum.subscribedCount} 
                 showCollect={currentAlbum.subscribedCount > 0}
+                musicAnimation={musicAnimation}
                 />
+              <MusicNote ref={musicNoteRef}></MusicNote>
             </div>
         </Scroll>
         ) : null

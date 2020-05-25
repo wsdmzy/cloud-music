@@ -25,7 +25,7 @@ function Player(props) {
     sequencePlayList:immutableSequencePlayList,//顺序列表
     fullScreen
   } = props;
-  
+  // console.log(playing)
   const {
     togglePlayingDispatch,
     changeCurrentIndexDispatch,
@@ -34,10 +34,10 @@ function Player(props) {
     changeModeDispatch,//改变mode
     toggleFullScreenDispatch
   } = props;
-
+  
   const playList = immutablePlayList.toJS()
   const sequencePlayList = immutableSequencePlayList.toJS()
-  const currentSong = immutableCurrentSong.toJS();
+  const currentSong = immutableCurrentSong.toJS()
 
   // toast
   const [modeText, setModeText] = useState("");
@@ -45,10 +45,6 @@ function Player(props) {
 
   //记录当前的歌曲，以便于下次重渲染时比对是否是一首歌
   const [preSong, setPreSong] = useState({});
-  //先mock一份currentIndex
-  useEffect(() => {
-    changeCurrentIndexDispatch(0);
-  }, [])
 
   useEffect(() => {
     if (
@@ -89,26 +85,27 @@ function Player(props) {
   }
 
  
-
-  useEffect(() => {
-    if (!currentSong) return
-    changeCurrentIndexDispatch(0) //currentIndex默认为-1，临时改成0
-    let current = playList[0]
-    changeCurrentDispatch(current)//赋值currentSong
-    audioRef.current.src = getSongUrl(current.id);
-    setTimeout(() => {
-      // 先暂停再播放
-      audioRef.current.play();
-    });
-    togglePlayingDispatch(true);//播放状态
-    setCurrentTime(0);//从头开始播放
-    setDuration((current.dt / 1000) | 0);//时长
-    audioRef.current.pause();
-  }, [])
+  // 首次进入就播播放
+  // useEffect(() => {  
+  //   if (isEmptyObject(currentSong))  return
+  //   // console.log(currentSong)
+  //   changeCurrentIndexDispatch(0) //currentIndex默认为-1，临时改成0
+  //   let current = playList[0]
+  //   changeCurrentDispatch(current)//赋值currentSong
+  //   audioRef.current.src = getSongUrl(current.id);
+  //   setTimeout(() => {
+  //     // 先暂停再播放
+  //     audioRef.current.play();
+  //   });
+  //   togglePlayingDispatch(true);//播放状态
+  //   setCurrentTime(0);//从头开始播放
+  //   setDuration((current.dt / 1000) | 0);// 时长
+  //   audioRef.current.pause();
+  // }, [])
 
   useEffect(() => {
     // console.log(playing, '+++')
-    playing  ? audioRef.current.play() : audioRef.current.pause()
+    playing && audioRef  ? audioRef.current.play() : audioRef.current.pause()
   }, [playing])
 
   const updateTime = e => {
@@ -141,7 +138,7 @@ function Player(props) {
     let index = currentIndex - 1
     if (index < 0) index = playList.length - 1
     if (!playing) togglePlayingDispatch(true)
-    changeCurrentDispatch(index)
+    changeCurrentIndexDispatch(index)
   }
 
   // 下一曲
@@ -151,6 +148,8 @@ function Player(props) {
       handleLoop()
       return
     } 
+
+
     let index = currentIndex + 1
     if (index === playList.length) index = 0
     if (!playing) togglePlayingDispatch(true)
