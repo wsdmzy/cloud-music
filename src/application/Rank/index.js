@@ -14,6 +14,8 @@ function Rank(props){
   const { getRankListDataDispatch } = props
   let rankList = list ? list.toJS() : []
 
+  const { songsCount } = props
+
   useEffect(() => {
     getRankListDataDispatch()
   }, [])
@@ -65,7 +67,7 @@ function Rank(props){
 
 
   return (
-    <Container>
+    <Container play={songsCount}>
       <Scroll>
         <div>
           <h1 className="offical" style={dispalyStyle}>
@@ -86,7 +88,8 @@ function Rank(props){
 
 const mapStateToProps = state => ({
   rankList: state.getIn(['rank', 'rankList']),
-  loading: state.getIn(['rank', 'loading'])
+  loading: state.getIn(['rank', 'loading']),
+  songsCount: state.getIn(['player', 'playList']).size
 })
 
 const mapDispathchToProps = dispatch => {

@@ -25,7 +25,7 @@ function Singer (props) {
   const musicAnimation = (x, y) => {
     musicNoteRef.current.startAnimation({x, y})
   }
-
+  const { songsCount } = props
   const { 
     artist: immutableArtist, 
     songs: immutableSongs, 
@@ -115,7 +115,7 @@ function Singer (props) {
       unmountOnExit
       onExited={props.history.goBack}
       >
-      <Container>
+      <Container play={songsCount}>
         <Header 
           title={artist.name}
           handleClick={setShowStatusFalse}
@@ -148,7 +148,8 @@ function Singer (props) {
 const mapStateToProps = state => ({
   artist: state.getIn(['singerInfo', 'artist']),
   songs: state.getIn(['singerInfo', 'songsOfArtist']),
-  loading: state.getIn(['singerInfo', 'loading'])
+  loading: state.getIn(['singerInfo', 'loading']),
+  songsCount: state.getIn(['player', 'playList']).size
 })
 
 const mapDispatchToProps = dispatch => {

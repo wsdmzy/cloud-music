@@ -18,6 +18,8 @@ export const HEADER_HEIGHT = 45;
 
 function Album(props) {
 
+  const { songsCount } = props
+
   const [showStatus, setShowStatus] = useState(true)
   const [title, setTitle] = useState("歌单")
   const [isMarquee, setIsMarquee] = useState(false) //是否开启跑马灯
@@ -122,7 +124,7 @@ function Album(props) {
       unmountOnExit
       onExited={props.history.goBack}
       >
-        <Container>
+        <Container play={songsCount}>
           <Header ref={headerEl} title={title} handleClick={handleBack} isMarquee={isMarquee}></Header>
           {
             !isEmptyObject (currentAlbum) ? (
@@ -151,7 +153,8 @@ function Album(props) {
 
 const mapStateToProps = state => ({
   currentAlbum: state.getIn(['album', 'currentAlbum']),
-  enterLoading: state.getIn(['album', 'enterLoading'])
+  enterLoading: state.getIn(['album', 'enterLoading']),
+  songsCount: state.getIn(['player', 'playList']).size
 })
 
 const mapDispatchToProps = dispatch => {

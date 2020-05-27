@@ -13,6 +13,7 @@ forwardRef
 
 图片懒加载
   react-lazyload  图片未显示的时候给它一个默认的 src，让一张非常精简的图片占位
+  forceCheck 配合滚动
 
 redux-thunk 可以让 store.dispatch 变成可以接收一个函数/一个对象的中间件
 
@@ -38,3 +39,6 @@ useCallback
   因此 useCallback 能够帮我们在依赖不变的情况保持一样的函数引用，最大程度地节约浏览器渲染性能。
 
 create-keyframe-animation js实现帧动画
+
+如果频繁切换歌曲，会出现这样的异常
+  其实从 audio 标签拿到 src 加载到能够播放之间有一个缓冲的过程，只有当控件能够播放时才能够切到下一首。如果在这个缓冲过程中切歌就会报错。

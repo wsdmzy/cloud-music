@@ -35,6 +35,7 @@ function Singers (props) {
     props.history.push(`/singers/${id}`)
   }
 
+  const { songsCount } = props
 
   let handleUpdateAlpha = (val) => {
     // setAlpha (val);
@@ -97,7 +98,7 @@ function Singers (props) {
           handleClick={ handleUpdateAlpha} 
           oldVal={alpha}></Horizen>
       </NavContainer>
-      <ListContainer>
+      <ListContainer play={songsCount}>
         <Scroll 
           pullUp={handlePullUp}
           pullDown={handlePullDown}
@@ -119,6 +120,7 @@ const mapStateToProps = state => ({
   pullUpLoading: state.getIn(['singers', 'pullUpLoading']),
   pullDownLoading: state.getIn(['singers', 'pullDownLoading']),
   pageCount: state.getIn(['singers', 'pageCount']),
+  songsCount: state.getIn(['player', 'playList']).size
 })
 
 const mapDispatchToProps = dispatch => {
