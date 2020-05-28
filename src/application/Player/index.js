@@ -15,6 +15,8 @@ import { getSongUrl, isEmptyObject, findIndex, shuffle } from '../../api/utils/u
 import Toast from "../../baseUI/Toast";
 import { playMode } from "../../api/config";
 import PlayList from '../PlayList/index'
+import {getLyricRequest} from '../../api/request'
+import Lyric from '../../api/utils/lyric-parser'
 
 function Player(props) {
   const {
@@ -71,6 +73,7 @@ function Player(props) {
       })
     })
     togglePlayingDispatch(true)
+    getLyric (current.id) //歌词
     setCurrentTime(0)
     setDuration((current.dt/1000)|0) //时长
   }, [playList, currentIndex])
@@ -91,6 +94,9 @@ function Player(props) {
     // console.log(state)
     togglePlayingDispatch(!playing)
     toggleFullScreenDispatch(state)
+    if (currentLyric.current) {
+      currentLyric.current.togglePlay(currentTime*1000)
+    }
   }
 
  
@@ -127,6 +133,9 @@ function Player(props) {
     audioRef.current.currentTime = newTime
     if (!playing) {
       togglePlayingDispatch(true)
+    }
+    if (currentLyric.current) {
+      currentLyric.current.seek(newTime*1000)
     }
   }
 
@@ -204,6 +213,40 @@ function Player(props) {
     alert("播放出错，请重新操作。")
   }
 
+  // 歌词
+  const [currentPlayingLyric, setPlayingLyric] = useState ("");
+  const currentLyric = useRef()
+  const currentLineNum = useRef (0);  //记录当前行
+  const handleLyric = ({lineNum, txt}) => {
+    if (!currentLyric.current) return
+    currentLineNum.current = lineNum
+    setPlayingLyric(txt)
+  }
+  const getLyric = id => {
+    let lyric = ''
+    if (currentLyric.current) {
+      currentLyric.current.stop()
+    }
+    // 避免songReady 一直位false情况
+    getLyricRequest(id)
+      .then(data => {
+        // console.log(new Lyric(data.lrc.lyric))  
+        lyric = data.lrc.lyric
+        if (!lyric) {
+          currentLyric.current = null;
+          return;
+        }
+        currentLyric.current = new Lyric(lyric, handleLyric)
+        currentLyric.current.play()
+        currentLineNum.current = 0
+        currentLyric.current.seek(0)
+      })
+      .catch (() => {
+        songReady.current = true;
+        audioRef.current.play ();
+      });
+  }
+ 
   return (
     <div>
       { isEmptyObject(currentSong) ? null : 
@@ -233,6 +276,9 @@ function Player(props) {
           mode={mode}
           changeMode={changeMode}
           togglePlayList={togglePlayListDispatch}
+          currentLyric={currentLyric.current}
+          currentPlayingLyric={currentPlayingLyric}
+          currentLineNum={currentLineNum.current}
         />
       }
       <audio 

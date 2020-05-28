@@ -75,7 +75,7 @@ const ConfirmWrapper = styled.div`
 
 const Confirm = forwardRef((props, ref) => {
   const [show, setShow] = useState(false)
-  const { text, cancleBtnText, confirmBtnText } = props
+  const { text, cancelBtnText, confirmBtnText } = props
   const { handleConfirm } = props;
 
   useImperativeHandle(ref, () => ({

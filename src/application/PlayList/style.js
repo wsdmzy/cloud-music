@@ -1,6 +1,7 @@
 import styled from'styled-components';
 import style from '../../assets/global-style';
 
+
 export const PlayListWrapper = styled.div`
   position: fixed;
   left: 0;
@@ -107,3 +108,4 @@ export const ListContent = styled.div`
     }
   }
 `
+
