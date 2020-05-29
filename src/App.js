@@ -7,6 +7,8 @@ import routes from './routes/index.js'
 import store from './store/index'
 import { Provider } from 'react-redux'
 import { Data } from './application/Singers/data'
+import initReactFastclick from 'react-fastclick';
+initReactFastclick();
 
 function App() {
   return (
